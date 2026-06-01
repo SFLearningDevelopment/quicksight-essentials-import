@@ -9,25 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,wght@0,700;0,800;1,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --blue:#1565C0;
-  --blue-dark:#0D47A1;
-  --blue-light:#E3F2FD;
-  --blue-mid:#90CAF9;
+  --bg:#fafbfc;--panel:#ffffff;--panel2:#f5f6f8;--white:#ffffff;--sf-navy:#0a1628;
+  --text:#0f172a;--text2:#475569;--muted:#64748b;
+  --border:#e2e8f0;--border2:#cbd5e1;
+  --blue:#1565C0;--blue-dark:#0D47A1;--blue-light:#E3F2FD;--blue-mid:#90CAF9;
   --navy:#0D47A1;
-  --text:#111827;--text2:#475569;--muted:#64748b;
-  --border:#e5e7eb;--border2:#cbd5e1;
-  --bg:#0f1117;--panel:#ffffff;--panel2:#f5f6f8;--bg2:#ffffff;--bg3:#f0f4f9;
-  --success:#43A047;--success-dark:#2E7D32;
-  --green:#16a34a;--green-soft:#dcfce7;--green-light:#dcfce7;
-  --danger:#DC2626;--red:#dc2626;--red-soft:#fee2e2;
+  --green:#16a34a;--green-soft:#dcfce7;
+  --red:#dc2626;--red-soft:#fee2e2;
   --amber:#d97706;--amber-soft:#fef3c7;
-  --purple:#7c3aed;--purple-soft:#ede9fe;
-  --radius:12px;
-  --shadow:0 1px 3px rgba(0,0,0,.10),0 1px 2px rgba(0,0,0,.06);
-  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 4px 12px rgba(15,23,42,.06);
   --shadow-lg:0 8px 24px rgba(15,23,42,.10);
-  --font-sans:'Source Sans 3','Segoe UI',system-ui,sans-serif;
-  --font-mono:'JetBrains Mono','Fira Code',Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{font-family:'Source Sans 3','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -35,7 +26,7 @@ h1,h2,h3,h4{font-family:'Source Serif 4',serif;letter-spacing:-.01em}
 a{color:inherit;text-decoration:none}
 
 /* Auth */
-.auth-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:1000}
+.auth-overlay{position:fixed;inset:0;background:#f5f7fa;display:flex;align-items:center;justify-content:center;z-index:1000}
 .auth-card{background:#fff;border-radius:16px;padding:40px 36px;max-width:420px;width:90%;box-shadow:var(--shadow-lg);text-align:center}
 .auth-card h2{font-size:22px;margin-bottom:8px}
 .auth-card p{color:var(--muted);margin-bottom:24px;font-size:14px}
