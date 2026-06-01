@@ -1,184 +1,284 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>QuickSight Essentials — Course Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate"/>
+<title>QuickSight Essentials — SF Internal Certification Course</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fafbfc; --panel:#ffffff; --panel2:#f5f6f8;
-  --text:#0f172a; --text2:#475569; --muted:#64748b;
-  --border:#e2e8f0; --border2:#cbd5e1;
-  --accent:#ff9900;        /* AWS orange */
-  --accent-dark:#cc7a00;
-  --accent-soft:#fff4e0;
-  --aws-navy:#232f3e;
-  --green:#16a34a; --green-soft:#dcfce7;
-  --blue:#2563eb;  --blue-soft:#dbeafe;
+  --blue:#1565C0;
+  --blue-dark:#0D47A1;
+  --blue-light:#E3F2FD;
+  --blue-mid:#90CAF9;
+  --navy:#0D47A1;
+  --text:#111827;--text2:#475569;--muted:#64748b;
+  --border:#e5e7eb;--border2:#cbd5e1;
+  --bg:#0f1117;--panel:#ffffff;--panel2:#f5f6f8;--bg2:#ffffff;--bg3:#f0f4f9;
+  --success:#43A047;--success-dark:#2E7D32;
+  --green:#16a34a;--green-soft:#dcfce7;--green-light:#dcfce7;
+  --danger:#DC2626;--red:#dc2626;--red-soft:#fee2e2;
+  --amber:#d97706;--amber-soft:#fef3c7;
   --purple:#7c3aed;--purple-soft:#ede9fe;
-  --red:#dc2626;   --red-soft:#fee2e2;
-  --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 12px rgba(15,23,42,.06);
+  --radius:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.10),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
   --shadow-lg:0 8px 24px rgba(15,23,42,.10);
+  --font-sans:'Source Sans 3','Segoe UI',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',Menlo,monospace;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:'Syne',sans-serif;letter-spacing:-.01em}
-a{color:inherit;text-decoration:none}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
 
-/* ---------- Auth overlay ---------- */
-.auth-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:1000}
-.auth-card{background:#fff;border-radius:16px;padding:40px 36px;max-width:420px;width:90%;box-shadow:var(--shadow-lg);text-align:center}
-.auth-card h2{font-size:22px;margin-bottom:8px}
-.auth-card p{color:var(--muted);margin-bottom:24px;font-size:14px}
-.auth-btn{width:100%;padding:13px 20px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;transition:all .15s}
-.auth-btn:hover{background:var(--panel2);border-color:var(--border2)}
-.auth-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-.auth-btn.primary:hover{background:var(--accent-dark)}
-.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.auth-input{width:100%;padding:11px 14px;border-radius:8px;border:1px solid var(--border);font-size:14px;margin-bottom:10px;font-family:inherit}
-.auth-input:focus{outline:none;border-color:var(--accent)}
-.auth-error{color:var(--red);font-size:12px;margin-top:6px;min-height:16px}
+/* Auth */
+#auth-overlay{position:fixed;inset:0;z-index:900;background:var(--bg);display:flex;align-items:center;justify-content:center;}
+.auth-box{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:52px 44px;max-width:420px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.12);text-align:center;animation:fadeUp .4s ease;}
+.auth-logo{width:90px;margin:0 auto 20px;display:block;}
+.auth-box h2{font-family:'Source Serif 4',serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.auth-box p{font-size:15px;color:var(--muted);margin-bottom:32px;line-height:1.6;}
+#signin-btn{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--blue);color:var(--navy);border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif;box-shadow:0 2px 8px rgba(21,101,192,.35);width:100%;}
+#signin-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+#auth-error{display:none;margin-top:12px;font-size:13px;color:#dc2626;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 12px;}
+.auth-divider{margin:16px 0 14px;color:#9ca3af;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;}
+.auth-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none;font-family:'Source Sans 3',sans-serif;color:var(--text);background:var(--white);display:block;}
+.auth-input:focus{border-color:var(--blue);}
+.email-signin-btn{display:block;width:100%;background:var(--blue);color:var(--white);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:all .2s;margin-top:4px;}
+.email-signin-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+#ep-error{display:none;margin-top:8px;font-size:13px;color:#dc2626;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 12px;}
 
-/* ---------- Top bar ---------- */
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:var(--shadow)}
-.tb-left{display:flex;align-items:center;gap:14px}
-.tb-logo{width:36px;height:36px;border-radius:8px;background:var(--aws-navy);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:16px}
-.tb-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px}
-.tb-sub{font-size:11px;color:var(--muted)}
-.tb-right{display:flex;align-items:center;gap:10px;font-size:13px}
-.tb-user{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:var(--panel2)}
-.tb-avatar{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
-.tb-btn{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:12px;font-weight:500;color:var(--text2)}
-.tb-btn:hover{background:var(--panel2)}
+/* Loading */
+#loading-overlay{position:fixed;inset:0;z-index:800;background:rgba(243,244,246,.9);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--blue-light);border-top-color:var(--blue);animation:spin .7s linear infinite;}
+#loading-overlay p{font-size:14px;color:var(--muted);font-weight:600;}
 
-/* ---------- Container ---------- */
-.container{max-width:1200px;margin:0 auto;padding:32px 28px 80px}
+/* Nav */
+nav{position:sticky;top:0;z-index:100;background:var(--blue);box-shadow:0 2px 12px rgba(0,0,0,.35);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{display:flex;align-items:center;gap:12px;}
+.nav-logo{height:30px;filter:brightness(0) invert(1);}
+.nav-title{font-family:'Source Serif 4',serif;font-size:17px;font-weight:800;color:#ffffff;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-user{display:flex;align-items:center;gap:8px;}
+#user-avatar{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);}
+#user-name{font-size:13px;font-weight:600;color:#ffffff;}
+#user-email{font-size:11px;color:rgba(255,255,255,.7);}
+#admin-badge{display:none;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:50px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.35);}
+#admin-btn{display:none;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 14px;border-radius:7px;cursor:pointer;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;text-decoration:none;}
+#admin-btn:hover{background:rgba(255,255,255,.2);}
+#signout-btn{font-size:13px;font-weight:600;padding:6px 14px;border-radius:7px;cursor:pointer;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;font-family:'Source Sans 3',sans-serif;}
+#signout-btn:hover{background:rgba(255,255,255,.2);}
 
-/* ---------- Hero ---------- */
-.hero{background:linear-gradient(135deg,var(--aws-navy) 0%,#1a2533 100%);border-radius:18px;padding:36px 36px;color:#fff;margin-bottom:32px;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.25}
-.hero h1{font-size:30px;margin-bottom:10px;position:relative}
-.hero p{color:#cbd5e1;max-width:720px;font-size:15px;position:relative}
-.hero-meta{display:flex;gap:10px;margin-top:18px;position:relative;flex-wrap:wrap}
-.hero-chip{padding:6px 12px;border-radius:999px;background:rgba(255,153,0,.15);border:1px solid rgba(255,153,0,.4);color:var(--accent);font-size:12px;font-weight:600}
-.hero-chip.alt{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff}
+/* App */
+#app{display:none;}
+.page{max-width:1100px;margin:0 auto;padding:36px 24px 80px;}
 
-/* ---------- Section labels ---------- */
-.section-label{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin:32px 0 14px}
+/* Hero */
+.hero{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:48px 32px;text-align:center;box-shadow:var(--shadow);margin-bottom:28px;animation:fadeUp .4s ease;}
+.hero h1{font-family:'Source Serif 4',serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:var(--navy);line-height:1.2;margin-bottom:14px;}
+.hero h1 em{font-style:normal;color:var(--blue);}
+.hero p{font-size:16px;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.7;}
+.hero-badges{display:flex;justify-content:center;gap:8px;margin-top:18px;flex-wrap:wrap;}
+.hero-badge{padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:var(--blue-light);color:var(--blue-dark);border:1px solid var(--blue);}
 
-/* ---------- Module grid ---------- */
-.module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
-.module-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;cursor:pointer;transition:all .18s;position:relative}
-.module-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.mc-header{display:flex;align-items:center;gap:14px;margin-bottom:6px}
-.mc-num{width:42px;height:42px;border-radius:10px;background:var(--accent-soft);color:var(--accent-dark);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;border:1px solid #ffd9a3}
-.mc-num.done{background:var(--green-soft);color:var(--green);border-color:#86efac}
-.mc-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;line-height:1.3}
-.mc-desc{font-size:13px;color:var(--text2);margin:8px 0 14px;min-height:38px}
-.mc-meta{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.mc-chip{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:var(--panel2);color:var(--text2)}
-.mc-chip.weight{background:var(--accent-soft);color:var(--accent-dark)}
-.mc-bar-wrap{height:6px;background:var(--panel2);border-radius:999px;overflow:hidden;margin-bottom:10px}
-.mc-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border-radius:999px;transition:width .4s}
-.mc-footer{display:flex;align-items:center;justify-content:space-between;font-size:12px}
-.mc-pct{color:var(--muted);font-weight:600}
-.mc-link{color:var(--accent-dark);font-weight:600;font-size:12px}
+/* Two-col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+@media(max-width:680px){.two-col{grid-template-columns:1fr;}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);animation:fadeUp .4s ease;}
+.card-title{font-family:'Source Serif 4',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;}
 
-/* ---------- Exam card ---------- */
-.exam-card{background:linear-gradient(135deg,#fffaf0,#fff);border:1px solid #fcd9a0;border-radius:14px;padding:24px;display:flex;align-items:flex-start;gap:18px;position:relative}
-.exam-card.locked{opacity:.65}
-.exam-icon{width:54px;height:54px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.exam-body{flex:1}
-.exam-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px}
-.exam-desc{font-size:13px;color:var(--text2);margin-top:4px}
-.exam-meta{font-size:12px;color:var(--muted);margin-top:8px}
-.exam-action{margin-top:14px}
-.btn-primary{padding:10px 18px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-weight:600;font-size:13px;cursor:pointer}
-.btn-primary:hover{background:var(--accent-dark)}
-.btn-primary:disabled{background:var(--border2);cursor:not-allowed}
+/* Learn list */
+.learn-list{list-style:none;}
+.learn-list li{padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:15px;display:flex;gap:10px;line-height:1.5;}
+.learn-list li:last-child{border-bottom:none;}
+.learn-list li b{color:var(--blue);font-weight:700;white-space:nowrap;}
 
-/* ---------- Datasets card ---------- */
-.datasets-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px}
-.datasets-card h3{font-size:16px;margin-bottom:6px}
-.datasets-card p{font-size:13px;color:var(--text2);margin-bottom:14px}
-.dataset-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.dataset-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--panel2);transition:all .15s}
-.dataset-item:hover{border-color:var(--accent);background:var(--accent-soft)}
-.ds-icon{width:32px;height:32px;border-radius:6px;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid var(--border)}
-.ds-name{font-size:12.5px;font-weight:600;line-height:1.2}
-.ds-size{font-size:11px;color:var(--muted)}
+/* Progress ring */
+.progress-center{display:flex;flex-direction:column;align-items:center;margin-bottom:18px;}
+.ring-wrap{position:relative;width:120px;height:120px;margin-bottom:10px;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--blue-light);stroke-width:10;}
+.ring-fill{fill:none;stroke:var(--success);stroke-width:10;stroke-linecap:round;stroke-dasharray:264;stroke-dashoffset:264;transition:stroke-dashoffset 1s ease;}
+#pct-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',serif;font-size:26px;font-weight:800;color:var(--success);}
+#progress-label{font-size:13px;color:var(--muted);text-align:center;}
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.stat-cell{background:var(--blue-light);border-radius:8px;padding:12px;text-align:center;}
+.stat-cell .num{font-family:'Source Serif 4',serif;font-size:28px;font-weight:800;color:var(--blue);}
+.stat-cell .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+#resume-btn{display:block;width:100%;background:var(--success);color:var(--white);border:none;border-radius:8px;padding:13px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:background .2s;}
+#resume-btn:hover{background:var(--success-dark);}
 
-/* ---------- Footer ---------- */
-.footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);text-align:center;line-height:1.7}
+/* Features */
+.feature-list{list-style:none;}
+.feature-list li{padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:15px;display:flex;align-items:center;gap:10px;}
+.feature-list li:last-child{border-bottom:none;}
+.chk{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--success);color:#fff;font-size:11px;flex-shrink:0;font-weight:900;}
+.cert-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.cert-chip{background:var(--blue-light);color:var(--blue-dark);padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700;border:1px solid var(--blue);}
 
-@media (max-width:640px){
-  .hero{padding:24px}
-  .hero h1{font-size:22px}
-  .container{padding:20px 16px 60px}
-}
+/* Exam CTA */
+.exam-cta{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:28px;color:#fff;animation:fadeUp .4s ease;}
+.exam-cta h2{font-family:'Source Serif 4',serif;font-size:22px;font-weight:800;margin-bottom:8px;}
+.exam-cta p{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:20px;}
+#exam-btn{padding:14px 36px;border-radius:10px;background:var(--blue);color:#fff;border:none;font-weight:800;font-size:16px;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:all .2s;}
+#exam-btn:hover:not(:disabled){background:var(--blue-dark);transform:translateY(-1px);}
+#exam-btn:disabled{background:#94a3b8;color:#fff;cursor:not-allowed;opacity:.7;}
+
+/* Datasets card */
+.datasets-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:28px;box-shadow:var(--shadow);animation:fadeUp .4s ease;}
+.datasets-card h3{font-family:'Source Serif 4',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.datasets-card p{font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.dataset-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.dataset-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#f9fafb;transition:all .15s;text-decoration:none;color:var(--text);}
+.dataset-item:hover{border-color:var(--blue);background:var(--blue-light);}
+.ds-icon{width:34px;height:34px;border-radius:8px;background:#fff;color:var(--blue-dark);display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--border);flex-shrink:0;}
+.ds-name{font-size:13px;font-weight:700;color:var(--text);}
+.ds-size{font-size:11px;color:var(--muted);}
+
+/* Module cards */
+.modules-section{margin-top:28px;}
+.modules-section h2{font-family:'Source Serif 4',serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:18px;}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
+.mod-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;animation:fadeUp .4s ease;}
+.mod-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.mod-header{background:var(--blue);color:var(--white);padding:18px 20px;}
+.mod-num{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-bottom:4px;}
+.mod-name{font-family:'Source Serif 4',serif;font-size:18px;font-weight:800;line-height:1.2;margin-bottom:4px;}
+.mod-sub{font-size:12px;opacity:.85;line-height:1.5;}
+.mod-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.mod-badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:50px;background:rgba(255,255,255,.2);color:var(--white);}
+.mod-body{padding:18px 20px;}
+.mod-progress-label{font-size:13px;color:var(--muted);margin-bottom:5px;}
+.mod-bar-track{height:6px;background:#e5e7eb;border-radius:50px;overflow:hidden;margin-bottom:14px;}
+.mod-bar-fill{height:100%;background:var(--success);border-radius:50px;transition:width 1s ease;}
+.mod-actions{display:flex;gap:10px;}
+.btn-learn{flex:1;padding:10px 14px;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;background:var(--success);color:var(--white);border:none;font-family:'Source Sans 3',sans-serif;transition:background .2s;text-align:center;text-decoration:none;display:inline-block;}
+.btn-learn:hover{background:var(--success-dark);}
+
+footer{background:var(--white);border-top:1px solid var(--border);padding:24px 32px;margin-top:60px;text-align:center;font-size:13px;color:var(--muted);}
 </style>
 </head>
 <body>
 
-<!-- ============ AUTH OVERLAY ============ -->
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-card">
-    <div style="font-size:32px;margin-bottom:8px">🔒</div>
+<div id="auth-overlay">
+  <div class="auth-box">
+    <img class="auth-logo" src="https://sflearningdevelopment.github.io/sf-internal-kubernetes-certification/sourcefuse-logo.png" alt="SourceFuse"/>
     <h2>QuickSight Essentials</h2>
-    <p>Sign in with your SourceFuse Google account to track your progress. Leads to the SF Certified QuickSight Practitioner certification.</p>
-    <button class="auth-btn primary" id="googleSignin">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 1 1-3.3-13l5.7-5.7A20 20 0 1 0 44 24c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8A12 12 0 0 1 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7A20 20 0 0 0 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.5-5.2L31.2 33A12 12 0 0 1 12.7 28.6L6.1 33.7A20 20 0 0 0 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6L37.5 39A20 20 0 0 0 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+    <p>Sign in with your SourceFuse Google account to access the course and save your progress.</p>
+    <button id="signin-btn">
+      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#fff" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg>
       Sign in with Google
     </button>
-    <div class="auth-divider">or sign in with SF email</div>
-    <input type="email" class="auth-input" id="emailInput" placeholder="firstname.lastname@sourcefuse.com" />
-    <button class="auth-btn" id="emailSignin">Continue with email</button>
-    <div class="auth-error" id="authErr"></div>
-    <p style="font-size:11px;margin-top:18px">Restricted to <strong>@sourcefuse.com</strong> accounts.</p>
+    <div id="auth-error"></div>
+    <div class="auth-divider">OR</div>
+    <input id="ep-email" type="email" placeholder="you@sourcefuse.com" autocomplete="email" class="auth-input">
+    <input id="ep-password" type="password" placeholder="Password" autocomplete="current-password" class="auth-input">
+    <button onclick="sfEmailSignIn()" class="email-signin-btn">Sign in with Email</button>
+    <div id="ep-error"></div>
   </div>
 </div>
 
-<!-- ============ TOP BAR ============ -->
-<div class="topbar" id="topbar" style="display:none">
-  <div class="tb-left">
-    <div class="tb-logo">QS</div>
-    <div>
-      <div class="tb-title">QuickSight Essentials</div>
-      <div class="tb-sub">Course Dashboard · Leads to the SF Certified QuickSight Practitioner certification</div>
+<div id="loading-overlay" style="display:none;">
+  <div class="spinner"></div>
+  <p>Loading your progress…</p>
+</div>
+
+<div id="app">
+
+<nav>
+  <div class="nav-brand">
+    <img class="nav-logo" src="https://sflearningdevelopment.github.io/sf-internal-kubernetes-certification/sourcefuse-logo.png" alt="SourceFuse"/>
+    <span class="nav-title">QuickSight Essentials Course</span>
+  </div>
+  <div class="nav-right">
+    <span id="admin-badge">ADMIN</span>
+    <a id="admin-btn" href="https://sflearningdevelopment.github.io/sf-knowledge-hub/">⚙ Hub</a>
+    <div class="nav-user">
+      <img id="user-avatar" src="" alt=""/>
+      <div><div id="user-name"></div><div id="user-email"></div></div>
     </div>
+    <button id="signout-btn">Sign out</button>
   </div>
-  <div class="tb-right">
-    <div class="tb-user" id="userBox"><div class="tb-avatar" id="userAvatar">?</div><span id="userName">—</span></div>
-    <button class="tb-btn" id="logoutBtn">Sign out</button>
-  </div>
-</div>
+</nav>
 
-<!-- ============ MAIN ============ -->
-<div class="container" id="mainContainer" style="display:none">
+<div class="page">
 
   <div class="hero">
-    <h1>📊 QuickSight Essentials</h1>
+    <h1>QuickSight <em>Essentials</em></h1>
     <p>From your first sign-in to publishing dashboards that move decisions — this course teaches you how to prepare data, build visuals, calculate fields, filter dynamically, and share securely in Amazon QuickSight.</p>
-    <div style="margin-top:12px;font-size:13px;color:var(--accent);font-weight:600;position:relative">→ Leads to the <strong>SF Certified QuickSight Practitioner</strong> certification.</div>
-    <div class="hero-meta">
-      <span class="hero-chip">6 Modules · 37 Sections</span>
-      <span class="hero-chip alt">Hands-on labs with sample data</span>
-      <span class="hero-chip alt">40-question certification exam</span>
-      <span class="hero-chip alt">~6 hours total</span>
+    <div class="hero-badges">
+      <span class="hero-badge">📊 SPICE Engine</span>
+      <span class="hero-badge">🔗 Data Connections</span>
+      <span class="hero-badge">🧮 Calculated Fields</span>
+      <span class="hero-badge">🔐 Row-Level Security</span>
     </div>
   </div>
 
-  <div class="section-label">Course Modules</div>
-  <div class="module-grid" id="moduleGrid"></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">📚 What You'll Learn</div>
+      <ul class="learn-list">
+        <li><b>Module 1</b> QuickSight overview, editions, SPICE engine, workspace tour</li>
+        <li><b>Module 2</b> Connecting data sources, SPICE vs Direct Query, joins, refresh</li>
+        <li><b>Module 3</b> Visual catalog, AutoGraph, drill-downs, dashboard composition</li>
+        <li><b>Module 4</b> Calculated fields, aggregations, date functions, level-aware calcs</li>
+        <li><b>Module 5</b> Filter scopes, controls, parameters, cascading filters, Top-N</li>
+        <li><b>Module 6</b> Publishing, users & groups, RLS, alerts, embedding</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Your Progress</div>
+      <div class="progress-center">
+        <div class="ring-wrap">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="42"/>
+            <circle class="ring-fill" id="progress-arc" cx="60" cy="60" r="42"/>
+          </svg>
+          <div id="pct-text">0%</div>
+        </div>
+        <div id="progress-label">0 of 37 sections completed</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-cell"><div class="num" id="stat-done">0</div><div class="lbl">Done</div></div>
+        <div class="stat-cell"><div class="num" id="stat-rem">37</div><div class="lbl">Remaining</div></div>
+      </div>
+      <button id="resume-btn" onclick="resumeLearning()">🚀 Start Learning</button>
+    </div>
+  </div>
 
-  <div class="section-label" style="margin-top:36px">Sample Datasets</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">✨ Course Features</div>
+      <ul class="feature-list">
+        <li><span class="chk">✓</span> 37 sections across 6 structured modules</li>
+        <li><span class="chk">✓</span> Inline quiz questions after every section</li>
+        <li><span class="chk">✓</span> Hands-on labs using real SourceFuse datasets</li>
+        <li><span class="chk">✓</span> Level-aware calculations and RLS deep-dives</li>
+        <li><span class="chk">✓</span> Progress tracked automatically in Firebase</li>
+        <li><span class="chk">✓</span> Certification exam with question-by-question review</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">🏅 Certification</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Complete all 37 sections to unlock the certification exam and earn your badge.</p>
+      <div class="cert-chips">
+        <span class="cert-chip">40 Questions</span>
+        <span class="cert-chip">45 Minutes</span>
+        <span class="cert-chip">70% Pass Mark</span>
+        <span class="cert-chip">3 Attempts</span>
+      </div>
+      <div style="margin-top:16px;padding:14px;background:var(--blue-light);border-radius:8px;font-size:13px;color:var(--blue-dark);font-weight:600;border:1px solid var(--blue);">
+        🎓 SF Certified QuickSight Practitioner
+      </div>
+    </div>
+  </div>
+
   <div class="datasets-card">
-    <h3>📁 SF-Themed Practice Data</h3>
-    <p>Three CSV files used across all six modules. Download them now and you'll have everything you need for every hands-on lab. The same datasets carry over to the upcoming Tableau and Power BI courses.</p>
+    <h3>📁 SF-Themed Practice Datasets</h3>
+    <p>Three CSV files used across all six modules. Download them now and you'll have everything needed for every hands-on lab.</p>
     <div class="dataset-list">
       <a class="dataset-item" href="../datasets/sf-sales-orders.csv" download>
         <div class="ds-icon">📋</div>
@@ -195,165 +295,265 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 
-  <div class="section-label" style="margin-top:36px">Certification Exam</div>
-  <div class="exam-card" id="examCard">
-    <div class="exam-icon">🏅</div>
-    <div class="exam-body">
-      <div class="exam-title">SF Certified QuickSight Practitioner — Exam</div>
-      <div class="exam-desc">40 questions · 45 minutes · 70% pass mark · 3 attempts · Proctored via the SF Knowledge Hub</div>
-      <div class="exam-meta" id="examGate">Complete all 6 modules to unlock the exam.</div>
-      <div class="exam-action">
-        <button class="btn-primary" id="examBtn" disabled>🔒 Locked — Modules Pending</button>
+  <div class="exam-cta">
+    <h2>🏅 Ready to get certified?</h2>
+    <p>Complete all 6 modules to unlock the certification exam. Your progress is saved automatically.</p>
+    <button id="exam-btn" onclick="window.location.href='quicksight-evaluation.html?v=2026-05-01-v1'" disabled>
+      🔒 Complete all modules to unlock
+    </button>
+  </div>
+
+  <div class="modules-section">
+    <h2>Course Modules</h2>
+    <div class="modules-grid">
+
+      <div class="mod-card">
+        <div class="mod-header">
+          <div class="mod-num">Module 1</div>
+          <div class="mod-name">Introduction &amp; First Look</div>
+          <div class="mod-sub">Ecosystem · Editions · SPICE · Workspace Tour</div>
+          <div class="mod-badges"><span class="mod-badge">5 Sections</span><span class="mod-badge">10% Exam Weight</span></div>
+        </div>
+        <div class="mod-body">
+          <div class="mod-progress-label" id="m1-text">0 / 5 sections completed</div>
+          <div class="mod-bar-track"><div class="mod-bar-fill" id="m1-bar" style="width:0%"></div></div>
+          <div class="mod-actions"><a href="quicksight-module-1.html?v=2026-05-01-v1" class="btn-learn" id="m1-btn">🚀 Start Learning</a></div>
+        </div>
       </div>
+
+      <div class="mod-card">
+        <div class="mod-header">
+          <div class="mod-num">Module 2</div>
+          <div class="mod-name">Data Preparation &amp; Connections</div>
+          <div class="mod-sub">Sources · SPICE vs Direct Query · Joins · Refresh</div>
+          <div class="mod-badges"><span class="mod-badge">7 Sections</span><span class="mod-badge">20% Exam Weight</span></div>
+        </div>
+        <div class="mod-body">
+          <div class="mod-progress-label" id="m2-text">0 / 7 sections completed</div>
+          <div class="mod-bar-track"><div class="mod-bar-fill" id="m2-bar" style="width:0%"></div></div>
+          <div class="mod-actions"><a href="quicksight-module-2.html?v=2026-05-01-v1" class="btn-learn" id="m2-btn">🚀 Start Learning</a></div>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-header">
+          <div class="mod-num">Module 3</div>
+          <div class="mod-name">Building Visuals</div>
+          <div class="mod-sub">Visual Catalog · AutoGraph · Drill-Downs · Dashboard Composition</div>
+          <div class="mod-badges"><span class="mod-badge">8 Sections</span><span class="mod-badge">25% Exam Weight</span></div>
+        </div>
+        <div class="mod-body">
+          <div class="mod-progress-label" id="m3-text">0 / 8 sections completed</div>
+          <div class="mod-bar-track"><div class="mod-bar-fill" id="m3-bar" style="width:0%"></div></div>
+          <div class="mod-actions"><a href="quicksight-module-3.html?v=2026-05-01-v1" class="btn-learn" id="m3-btn">🚀 Start Learning</a></div>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-header">
+          <div class="mod-num">Module 4</div>
+          <div class="mod-name">Calculated Fields &amp; Expressions</div>
+          <div class="mod-sub">Aggregations · Conditionals · Date Functions · Level-Aware Calcs</div>
+          <div class="mod-badges"><span class="mod-badge">6 Sections</span><span class="mod-badge">20% Exam Weight</span></div>
+        </div>
+        <div class="mod-body">
+          <div class="mod-progress-label" id="m4-text">0 / 6 sections completed</div>
+          <div class="mod-bar-track"><div class="mod-bar-fill" id="m4-bar" style="width:0%"></div></div>
+          <div class="mod-actions"><a href="quicksight-module-4.html?v=2026-05-01-v1" class="btn-learn" id="m4-btn">🚀 Start Learning</a></div>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-header">
+          <div class="mod-num">Module 5</div>
+          <div class="mod-name">Filters &amp; Parameters</div>
+          <div class="mod-sub">Filter Scopes · Controls · Parameters · Cascading · Top-N</div>
+          <div class="mod-badges"><span class="mod-badge">5 Sections</span><span class="mod-badge">15% Exam Weight</span></div>
+        </div>
+        <div class="mod-body">
+          <div class="mod-progress-label" id="m5-text">0 / 5 sections completed</div>
+          <div class="mod-bar-track"><div class="mod-bar-fill" id="m5-bar" style="width:0%"></div></div>
+          <div class="mod-actions"><a href="quicksight-module-5.html?v=2026-05-01-v1" class="btn-learn" id="m5-btn">🚀 Start Learning</a></div>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-header">
+          <div class="mod-num">Module 6</div>
+          <div class="mod-name">Sharing, Security &amp; Governance</div>
+          <div class="mod-sub">Publishing · Users &amp; Groups · RLS · Alerts · Embedding</div>
+          <div class="mod-badges"><span class="mod-badge">6 Sections</span><span class="mod-badge">10% Exam Weight</span></div>
+        </div>
+        <div class="mod-body">
+          <div class="mod-progress-label" id="m6-text">0 / 6 sections completed</div>
+          <div class="mod-bar-track"><div class="mod-bar-fill" id="m6-bar" style="width:0%"></div></div>
+          <div class="mod-actions"><a href="quicksight-module-6.html?v=2026-05-01-v1" class="btn-learn" id="m6-btn">🚀 Start Learning</a></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="footer">
-    <strong>SourceFuse Internal Training Platform</strong><br />
-    Confidential — for SourceFuse employees only. Not for redistribution outside the organisation.<br />
-    Course materials are reviewed quarterly. Report issues to the L&amp;D team.
-  </div>
+</div><!-- .page -->
 
-</div>
+<footer>
+  🤖 AI-Generated &amp; Expert-Reviewed &nbsp;|&nbsp;
+  📚 Educational Use Only &nbsp;|&nbsp;
+  🔒 Progress stored securely in Firebase &nbsp;|&nbsp;
+  Content current as of May 2026
+</footer>
 
-<!-- ============ FIREBASE ============ -->
+</div><!-- #app -->
+
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+import { initializeApp }     from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup,
+         signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc }
   from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA-8fatW5D7uR69rcuGFPH54IFqrz0PhU0",
-  authDomain: "sfcertification-grafana.firebaseapp.com",
-  projectId: "sfcertification-grafana",
-  storageBucket: "sfcertification-grafana.firebasestorage.app",
+  apiKey:            "AIzaSyA-8fatW5D7uR69rcuGFPH54IFqrz0PhU0",
+  authDomain:        "sfcertification-grafana.firebaseapp.com",
+  projectId:         "sfcertification-grafana",
+  storageBucket:     "sfcertification-grafana.firebasestorage.app",
   messagingSenderId: "227322696511",
-  appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+  appId:             "1:227322696511:web:12e7ced7dd3d45fa06798a"
 };
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-const MODULES = [
-  {key:'m1', num:1, title:'Introduction & First Look',          desc:'What QuickSight is, editions, SPICE, first sign-in, workspace tour, sample data orientation', sections:5, weight:'10%'},
-  {key:'m2', num:2, title:'Data Preparation & Connections',     desc:'Connecting to data sources, SPICE vs Direct Query, joins, calculated fields in prep, refresh', sections:7, weight:'20%'},
-  {key:'m3', num:3, title:'Building Visuals',                   desc:'Visual catalog, AutoGraph, formatting, drill-downs, tooltips, dashboard composition',         sections:8, weight:'25%'},
-  {key:'m4', num:4, title:'Calculated Fields & Expressions',    desc:'Expression syntax, aggregations, date functions, conditional logic, level-aware calcs',       sections:6, weight:'20%'},
-  {key:'m5', num:5, title:'Filters & Parameters',               desc:'Filter scopes, controls, parameters, cascading filters, Top N, filter actions',               sections:5, weight:'15%'},
-  {key:'m6', num:6, title:'Sharing, Security & Governance',     desc:'Publishing dashboards, users & groups, row-level security, alerts, embedding',                sections:6, weight:'10%'}
+const ADMIN_EMAILS = ['jv.ravichandran@sourcefuse.com','noushin.khan@sourcefuse.com'];
+
+const MODULE_CFG = [
+  { key:'m1', n:1, total:5 },
+  { key:'m2', n:2, total:7 },
+  { key:'m3', n:3, total:8 },
+  { key:'m4', n:4, total:6 },
+  { key:'m5', n:5, total:5 },
+  { key:'m6', n:6, total:6 },
 ];
+const TOTAL = 37;
+let _progress = {};
 
-function $(id){return document.getElementById(id)}
+document.getElementById('signin-btn').addEventListener('click', async () => {
+  try {
+    const p = new GoogleAuthProvider();
+    p.setCustomParameters({hd:'sourcefuse.com'});
+    await signInWithPopup(auth, p);
+  } catch(e) {
+    const el = document.getElementById('auth-error');
+    el.textContent = e.message || 'Sign-in failed.'; el.style.display = 'block';
+  }
+});
+document.getElementById('signout-btn').addEventListener('click', () => signOut(auth));
 
-async function ensureUserDoc(u){
-  const ref = doc(db,'users',u.uid);
-  const snap = await getDoc(ref);
-  const base = {uid:u.uid, email:u.email, name:u.displayName||u.email, photoURL:u.photoURL||'', lastSeen:new Date().toISOString()};
-  if(!snap.exists()) await setDoc(ref, base);
-  else await setDoc(ref, {lastSeen:base.lastSeen}, {merge:true});
-}
-
-async function loadProgress(u){
-  const ref = doc(db,'progress',u.uid);
-  const snap = await getDoc(ref);
-  return snap.exists() ? snap.data() : {};
-}
-
-function pctClass(pct){return pct>=100?' done':''}
-
-function renderModules(progress){
-  const grid = $('moduleGrid');
-  grid.innerHTML = '';
-  let totalDone = 0;
-  MODULES.forEach(m => {
-    const completed = (progress[m.key] || []).length;
-    const pct = Math.min(100, Math.round((completed / m.sections) * 100));
-    if(pct>=100) totalDone++;
-    grid.insertAdjacentHTML('beforeend', `
-      <a class="module-card" href="quicksight-module-${m.num}.html?v=2026-05-01-v1">
-        <div class="mc-header">
-          <div class="mc-num${pctClass(pct)}">${pct>=100?'✓':m.num}</div>
-          <div class="mc-title">${m.title}</div>
-        </div>
-        <div class="mc-desc">${m.desc}</div>
-        <div class="mc-meta">
-          <span class="mc-chip">${m.sections} sections</span>
-          <span class="mc-chip weight">${m.weight} exam weight</span>
-        </div>
-        <div class="mc-bar-wrap"><div class="mc-bar" style="width:${pct}%"></div></div>
-        <div class="mc-footer">
-          <span class="mc-pct">${completed} / ${m.sections}</span>
-          <span class="mc-link">${pct>=100?'Review':completed?'Continue':'Start'} →</span>
-        </div>
-      </a>
-    `);
-  });
-  // exam unlock
-  const examBtn = $('examBtn');
-  const examGate = $('examGate');
-  if(totalDone === MODULES.length){
-    examBtn.disabled = false;
-    examBtn.textContent = '🎯 Schedule Certification Exam';
-    examBtn.onclick = () => { window.location.href = '../sf-certs-hub.html?v=2026-05-01-v1'; };
-    examGate.textContent = 'All modules complete — schedule your exam through the SF Knowledge Hub.';
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    if (!user.email || !user.email.endsWith('@sourcefuse.com')) {
+      document.getElementById('auth-error').textContent = 'Only @sourcefuse.com accounts are allowed.';
+      document.getElementById('auth-error').style.display = 'block';
+      await signOut(auth); return;
+    }
+    document.getElementById('auth-overlay').style.display = 'none';
+    document.getElementById('loading-overlay').style.display = 'flex';
+    await loadProgress(user);
+    document.getElementById('loading-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    renderHeader(user);
   } else {
-    examBtn.disabled = true;
-    examBtn.textContent = `🔒 ${MODULES.length - totalDone} module(s) remaining`;
-    examGate.textContent = `Complete all 6 modules to unlock the exam (${totalDone}/${MODULES.length} done).`;
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('auth-overlay').style.display = 'flex';
+  }
+});
+
+function renderHeader(user) {
+  document.getElementById('user-name').textContent  = user.displayName || '';
+  document.getElementById('user-email').textContent = user.email || '';
+  document.getElementById('user-avatar').src        = user.photoURL || '';
+  if (ADMIN_EMAILS.includes(user.email)) {
+    document.getElementById('admin-badge').style.display = 'inline';
+    document.getElementById('admin-btn').style.display   = 'inline-flex';
   }
 }
 
-async function bootUser(u){
-  if(!u.email || !u.email.endsWith('@sourcefuse.com')){
-    await signOut(auth);
-    $('authErr').textContent = 'Only @sourcefuse.com accounts are allowed.';
-    return;
+async function loadProgress(user) {
+  const snap = await getDoc(doc(db, 'progress', user.uid));
+  _progress = snap.exists() ? snap.data() : {};
+
+  const alreadyUnlocked = _progress.qs_examUnlocked === true;
+  let totalDone = 0;
+  let allComplete = true;
+
+  for (const { key, n, total } of MODULE_CFG) {
+    const done = (_progress[key] || []).length;
+    const pct  = Math.round((done / total) * 100);
+    totalDone += done;
+    if (done < total) allComplete = false;
+
+    const bar = document.getElementById(`m${n}-bar`);
+    const txt = document.getElementById(`m${n}-text`);
+    const btn = document.getElementById(`m${n}-btn`);
+    if (bar) bar.style.width = pct + '%';
+    if (txt) txt.textContent = `${done} / ${total} sections completed`;
+    if (btn) btn.textContent = done > 0 ? '📖 Resume Learning' : '🚀 Start Learning';
   }
-  $('auth-overlay').style.display = 'none';
-  $('topbar').style.display = 'flex';
-  $('mainContainer').style.display = 'block';
-  $('userName').textContent = (u.displayName || u.email).split('@')[0];
-  $('userAvatar').textContent = (u.displayName||u.email)[0].toUpperCase();
-  await ensureUserDoc(u);
-  const progress = await loadProgress(u);
-  renderModules(progress);
+
+  const overall = Math.round((totalDone / TOTAL) * 100);
+  const circ    = 2 * Math.PI * 42;
+  const arc     = document.getElementById('progress-arc');
+  if (arc) {
+    arc.style.strokeDasharray  = circ;
+    arc.style.strokeDashoffset = circ - (circ * overall / 100);
+    if (overall === 100) arc.style.stroke = '#16a34a';
+  }
+  document.getElementById('pct-text').textContent       = overall + '%';
+  document.getElementById('progress-label').textContent = `${totalDone} of ${TOTAL} sections completed`;
+  document.getElementById('stat-done').textContent      = totalDone;
+  document.getElementById('stat-rem').textContent       = TOTAL - totalDone;
+  document.getElementById('resume-btn').textContent     = totalDone > 0 ? '📖 Resume Learning' : '🚀 Start Learning';
+
+  if (allComplete && !alreadyUnlocked) {
+    try {
+      await setDoc(doc(db, 'progress', user.uid),
+        { qs_examUnlocked: true }, { merge: true });
+    } catch(e) { console.warn('Could not write qs_examUnlocked:', e); }
+  }
+
+  const examUnlocked = allComplete || alreadyUnlocked;
+  const examBtn = document.getElementById('exam-btn');
+  if (examUnlocked && examBtn) {
+    examBtn.disabled = false;
+    examBtn.textContent = '🎯 Take Certification Exam →';
+    examBtn.style.cssText = 'padding:14px 36px;border-radius:10px;background:var(--blue);color:var(--navy);border:none;font-weight:800;font-size:16px;cursor:pointer;font-family:\'Source Sans 3\',sans-serif;transition:all .2s;';
+  }
 }
 
-onAuthStateChanged(auth, u => { if(u) bootUser(u); });
-
-$('googleSignin').onclick = async () => {
-  $('authErr').textContent = '';
-  try{
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({hd:'sourcefuse.com'});
-    await signInWithPopup(auth, provider);
-  }catch(e){ $('authErr').textContent = e.message || 'Sign-in failed.'; }
+window.resumeLearning = function() {
+  for (const { key, n, total } of MODULE_CFG) {
+    if ((_progress[key] || []).length < total) {
+      window.location.href = `quicksight-module-${n}.html?v=2026-05-01-v1`;
+      return;
+    }
+  }
+  window.location.href = 'quicksight-evaluation.html?v=2026-05-01-v1';
 };
 
-$('emailSignin').onclick = async () => {
-  const email = $('emailInput').value.trim();
-  if(!email.endsWith('@sourcefuse.com')){ $('authErr').textContent='Use a @sourcefuse.com email.'; return; }
-  // email-only fallback: localStorage stub like other SF courses
-  const fakeUid = 'email_' + email.replace(/[^a-z0-9]/gi,'_');
-  const fake = {uid:fakeUid, email, displayName:email.split('@')[0], photoURL:''};
-  localStorage.setItem('qs_emailUser', JSON.stringify(fake));
-  bootUser(fake);
+window.sfEmailSignIn = function() {
+  const email = (document.getElementById('ep-email').value || '').trim().toLowerCase();
+  const pwd   =  document.getElementById('ep-password').value || '';
+  const errEl =  document.getElementById('ep-error');
+  errEl.style.display = 'none';
+  if (!email || !pwd)  { errEl.textContent = 'Please enter your email and password.'; errEl.style.display = 'block'; return; }
+  if (!email.endsWith('@sourcefuse.com')) { errEl.textContent = 'Only @sourcefuse.com accounts are allowed.'; errEl.style.display = 'block'; return; }
+  signInWithEmailAndPassword(auth, email, pwd).catch(e => {
+    errEl.textContent = (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') ? 'Incorrect password.'
+      : (e.code === 'auth/user-not-found') ? 'No account found for this email.' : e.message;
+    errEl.style.display = 'block';
+  });
 };
-
-$('logoutBtn').onclick = async () => {
-  localStorage.removeItem('qs_emailUser');
-  await signOut(auth);
-  location.reload();
-};
-
-// auto-resume email session
-(function(){
-  const raw = localStorage.getItem('qs_emailUser');
-  if(raw){ try{ bootUser(JSON.parse(raw)); }catch{} }
-})();
 </script>
-
 </body>
 </html>
